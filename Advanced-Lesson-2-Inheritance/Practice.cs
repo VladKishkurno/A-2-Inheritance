@@ -10,57 +10,54 @@ namespace Advanced_Lesson_2_Inheritance
 {
     public static partial class Practice
     {
-        public abstract class Printer
+        public interface IPrinter
         {
-            public string Text;
-
-            public Printer(string Text)
-            {
-                this.Text = Text;
-            }
-            public abstract void Print();
+             void Print();
         }
 
-        public class FilePrinter : Printer
+        public class FilePrinter : IPrinter
         {
+            public string Text;
             private string _fileName;
-            public FilePrinter( string Text, string FileName) : base(Text)
+            public FilePrinter( string Text, string FileName)
             {
+                this.Text = Text;
                 this._fileName = FileName;
             }
-            public override void Print()
+            public void Print()
             {
                 System.IO.File.AppendAllText($@"d:\{_fileName}.txt", Text);
             }
         }
 
-        public class ConsolePrinter : Printer
+        public class ConsolePrinter : IPrinter
         {
+            public string Text;
             private ConsoleColor _color;
-            public ConsolePrinter(string Text, ConsoleColor color) : base(Text)
+            public ConsolePrinter(string Text, ConsoleColor color)
             {
+                this.Text = Text;
                 this._color = color;
             }
-            public override void Print()
+            public void Print()
             {
                 Console.ForegroundColor = _color;
                 Console.WriteLine(Text);
-                base.Text = Text;
             }
         }
 
-        public class ImagePrinter : Printer
+        public class ImagePrinter : IPrinter
         {
+            public string Text;
             private string _fileName;
-            public ImagePrinter(string Text, string FileName) : base(Text)
+            public ImagePrinter(string Text, string FileName)
             {
+                this.Text = Text;
                 this._fileName = FileName;
             }
-            public override void Print()
+            public void Print()
             {
-                //System.IO.File.Create($@"d{_fileName}.jpg");
                 Bitmap image = new Bitmap(2000, 1000) ;
-
                 
                 RectangleF rectf = new RectangleF(70, 90, 100, 70);
                 Graphics g = Graphics.FromImage(image);
@@ -87,7 +84,7 @@ namespace Advanced_Lesson_2_Inheritance
 
             string choose = Console.ReadLine();
 
-            Printer printer = null;
+            IPrinter printer = null;
 
             switch (choose)
             {
